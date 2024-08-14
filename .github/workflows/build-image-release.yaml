@@ -41,14 +41,14 @@ jobs:
             CADDY_VERSION=${{ env.CADDY_VERSION }}
             PACKAGE_LIBROUTE53_VERSION=${{ env.PACKAGE_LIBROUTE53_VERSION }}
           labels: |
-            org.opencontainers.image.source=https://github.com/CyberXProp/caddy-route53
-          tags: ghcr.io/cyberxprop/caddy-route53:${{ env.CADDY_VERSION }}
+            org.opencontainers.image.source=https://github.com/baowei/caddy-route53
+          tags: ghcr.io/baowei/caddy-route53:${{ env.CADDY_VERSION }}
           outputs: type=local,dest=/tmp/output
 
       - name: Compress Caddy Binary
         run: |
           if [ -f /tmp/output/usr/bin/caddy ]; then
-            tar -czvf /tmp/output/caddy-${{ env.CADDY_VERSION }}.tar.gz -C /tmp/output/usr/bin caddy
+            tar -czvf /tmp/output/caddy-${{ env.CADDY_VERSION }}-x86_64.tar.gz -C /tmp/output/usr/bin caddy
           else
             echo "Error: /tmp/output/usr/bin/caddy not found."
             exit 1
@@ -60,4 +60,4 @@ jobs:
           name: release-${{ env.CADDY_VERSION }}
           tag_name: ${{ env.CADDY_VERSION }}
           # generate_release_notes: true
-          files: /tmp/output/caddy-${{ env.CADDY_VERSION }}.tar.gz
+          files: /tmp/output/caddy-${{ env.CADDY_VERSION }}-x86_64.tar.gz
