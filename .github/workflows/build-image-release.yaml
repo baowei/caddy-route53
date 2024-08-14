@@ -12,6 +12,7 @@ jobs:
     name: Build the container image
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       packages: write
 
     steps:
