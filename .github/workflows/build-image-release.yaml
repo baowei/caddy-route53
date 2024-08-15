@@ -48,7 +48,7 @@ jobs:
       - name: Compress Caddy Binary
         run: |
           if [ -f /tmp/output/usr/bin/caddy ]; then
-            tar -czvf /tmp/output/caddy-${{ env.CADDY_VERSION }}-x86_64.tar.gz -C /tmp/output/usr/bin caddy
+            tar -czvf /tmp/output/caddy-${{ env.CADDY_VERSION }}-linux-amd64.tar.gz -C /tmp/output/usr/bin caddy
           else
             echo "Error: /tmp/output/usr/bin/caddy not found."
             exit 1
@@ -60,4 +60,4 @@ jobs:
           name: release-${{ env.CADDY_VERSION }}
           tag_name: ${{ env.CADDY_VERSION }}
           # generate_release_notes: true
-          files: /tmp/output/caddy-${{ env.CADDY_VERSION }}-x86_64.tar.gz
+          files: /tmp/output/caddy-${{ env.CADDY_VERSION }}-linux-amd64.tar.gz
