@@ -1,16 +1,24 @@
 name: Build the container image
 
 on:
-  push:
-
-env:
-  CADDY_VERSION: v2.8.4
-  PACKAGE_LIBROUTE53_VERSION: v1.5.0
+  workflow_dispatch:
+    inputs:
+      caddy_version:
+        description: 'Caddy版本 (如 v2.9.1)'
+        required: true
+      module_version:
+        description: '模块版本 (如 v1.5.0)'
+        required: true
+  release:
+    types: [published]
 
 jobs:
   build:
     name: Build the container image
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,31 +41,31 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          platforms: linux/amd64
+          platforms: ${{ matrix.platform }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            CADDY_VERSION=${{ env.CADDY_VERSION }}
-            PACKAGE_LIBROUTE53_VERSION=${{ env.PACKAGE_LIBROUTE53_VERSION }}
+            CADDY_VERSION=${{ ${{ github.event.inputs.caddy_version }}
+            PACKAGE_LIBROUTE53_VERSION=${{ github.event.inputs.module_version }}
           labels: |
             org.opencontainers.image.source=https://github.com/baowei/caddy-route53
-          tags: ghcr.io/baowei/caddy-route53:${{ env.CADDY_VERSION }}
-          outputs: type=local,dest=/tmp/output
+          tags: ghcr.io/baowei/caddy-route53:${{ github.event.inputs.caddy_version }}
+          outputs: type=local,dest=./build/${{ matrix.arch }}
 
-      - name: Compress Caddy Binary
+      - name: Package binary
         run: |
-          if [ -f /tmp/output/usr/bin/caddy ]; then
-            tar -czvf /tmp/output/caddy-${{ env.CADDY_VERSION }}-linux-amd64.tar.gz -C /tmp/output/usr/bin caddy
-          else
-            echo "Error: /tmp/output/usr/bin/caddy not found."
-            exit 1
-          fi
+          mkdir -p artifacts
+          cd build/${{ matrix.arch }}
+          tar czvf ../../artifacts/caddy-${{ github.event.inputs.caddy_version }}-linux-${{ matrix.arch }}.tar.gz usr/bin/caddy
+          cd ../..
 
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
         with:
-          name: release-${{ env.CADDY_VERSION }}
-          tag_name: ${{ env.CADDY_VERSION }}
-          # generate_release_notes: true
-          files: /tmp/output/caddy-${{ env.CADDY_VERSION }}-linux-amd64.tar.gz
+          name: Caddy ${{ github.event.inputs.caddy_version }}
+          tag_name: ${{ github.event.inputs.caddy_version }}
+          files: |
+            artifacts/caddy-${{ github.event.inputs.caddy_version }}-linux-*.tar.gz
+          draft: false
+          prerelease: false
