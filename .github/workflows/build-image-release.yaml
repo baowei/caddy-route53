@@ -46,7 +46,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            CADDY_VERSION=${{ ${{ github.event.inputs.caddy_version }}
+            CADDY_VERSION=${{ github.event.inputs.caddy_version }}
             PACKAGE_LIBROUTE53_VERSION=${{ github.event.inputs.module_version }}
           labels: |
             org.opencontainers.image.source=https://github.com/baowei/caddy-route53
