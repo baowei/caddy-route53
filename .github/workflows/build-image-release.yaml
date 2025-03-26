@@ -61,7 +61,7 @@ jobs:
             --transform 'flags=r;s|usr/bin/||' \
             usr/bin/caddy
           cd ../..
-          sha256sum artifacts/*.tar.gz >> artifacts/checksums.txt
+          sha256sum artifacts/caddy_${{ github.event.inputs.caddy_version }}_linux_${{ matrix.arch }}.tar.gz  >> artifacts/caddy_${{ github.event.inputs.caddy_version }}_checksums.txt
 
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
@@ -70,6 +70,6 @@ jobs:
           tag_name: ${{ github.event.inputs.caddy_version }}
           files: |
             artifacts/caddy_${{ github.event.inputs.caddy_version }}_linux_*.tar.gz
-            artifacts/checksums.txt
+            artifacts/caddy_${{ github.event.inputs.caddy_version }}_checksums.txt
           draft: false
           prerelease: false
