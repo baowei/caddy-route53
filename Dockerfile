@@ -2,8 +2,8 @@ FROM caddy:builder as builder
 ARG CADDY_VERSION
 ARG ROUTE53_VERSION
 
-RUN xcaddy build ${CADDY_VERSION} \
-    --with github.com/caddy-dns/route53@${ROUTE53_VERSION}
+RUN xcaddy build v${CADDY_VERSION} \
+    --with github.com/caddy-dns/route53@v${ROUTE53_VERSION}
 
 FROM caddy:latest
 

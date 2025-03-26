@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       caddy_version:
-        description: 'Caddy版本 (如 v2.9.1)'
+        description: 'Caddy版本 (如 2.9.1)'
         required: true
       module_version:
-        description: '模块版本 (如 v1.5.0)'
+        description: 'Route53模块版本 (如 1.5.0)'
         required: true
   release:
     types: [published]
