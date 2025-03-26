@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir -p artifacts
           cd build/${{ matrix.arch }}
-          tar czvf ../../artifacts/caddy-${{ github.event.inputs.caddy_version }}-linux-${{ matrix.arch }}.tar.gz \
+          tar czvf ../../artifacts/caddy_${{ github.event.inputs.caddy_version }}_linux_${{ matrix.arch }}.tar.gz \
             --transform 'flags=r;s|usr/bin/||' \
             usr/bin/caddy
           cd ../..
@@ -69,7 +69,7 @@ jobs:
           name: Caddy ${{ github.event.inputs.caddy_version }}
           tag_name: ${{ github.event.inputs.caddy_version }}
           files: |
-            artifacts/caddy-${{ github.event.inputs.caddy_version }}-linux-*.tar.gz
+            artifacts/caddy_${{ github.event.inputs.caddy_version }}_linux_*.tar.gz
             artifacts/checksums.txt
           draft: false
           prerelease: false
