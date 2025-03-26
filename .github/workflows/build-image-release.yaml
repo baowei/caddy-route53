@@ -61,7 +61,7 @@ jobs:
             --transform 'flags=r;s|usr/bin/||' \
             usr/bin/caddy
           cd ../..
-          sha256sum artifacts/*.tar.gz > artifacts/checksums.txt
+          sha256sum artifacts/*.tar.gz >> artifacts/checksums.txt
 
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
