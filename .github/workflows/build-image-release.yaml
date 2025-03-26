@@ -58,11 +58,11 @@ jobs:
           mkdir -p artifacts
           cd build/${{ matrix.arch }}
           tar czvf ../../artifacts/caddy_${{ github.event.inputs.caddy_version }}_linux_${{ matrix.arch }}.tar.gz \
-            --transform 'flags=r;s|usr/bin/||' \
-            usr/bin/caddy
+            --transform 'flags=r;s|usr/bin/||' usr/bin/caddy
           cd ../..
           echo "$(sha256sum artifacts/caddy_${{ github.event.inputs.caddy_version }}_linux_${{ matrix.arch }}.tar.gz)" \
-              | sed 's/  artifacts\///' >> artifacts/caddy_${{ github.event.inputs.caddy_version }}_checksums.txt
+              | sed 's/  artifacts\///' \ 
+              >> artifacts/caddy_${{ github.event.inputs.caddy_version }}_${{ matrix.arch }}_checksums.txt
 
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
