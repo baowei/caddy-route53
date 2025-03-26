@@ -67,7 +67,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: Caddy ${{ github.event.inputs.caddy_version }}
-          tag_name: ${{ github.event.inputs.caddy_version }}
+          tag_name: v${{ github.event.inputs.caddy_version }}
           files: |
             artifacts/caddy_${{ github.event.inputs.caddy_version }}_linux_*.tar.gz
             artifacts/caddy_*_checksums.txt
